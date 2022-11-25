@@ -13,9 +13,10 @@
 }
 .box{
     display: none;
+
 }
 .musicSwitch{
-    
+    cursor: pointer;
 }
 .music{
     display: flex;
@@ -24,6 +25,7 @@
 .musicImg{
     width: 20px;
     height: 20px;
+    cursor: pointer;
 }
 .Progress {
     height: 4px;
