@@ -32,13 +32,13 @@ function rollText(item){
 
     const p = item /10 -num
     console.log(p,num);
-    const textWidth = (musictext.offsetWidth + 180) *p
-    const time = textWidth / 60
+    const textWidth = (musictext.offsetWidth + 200) *p + num*160
+    const time = Math.abs(textWidth / 60)
     const textLeft = Math.abs(musictext.style.left.slice(0,musictext.style.left.length-2))
     if(p>1){
-        // num += p
-        // musictext.style.transition = ''
-        // musictext.style.left =  `200px`
+        num += p
+        musictext.style.transition = ''
+        musictext.style.left =  `200px`
     } else{
         musictext.style.transition = `all ${time}s linear`
         // musictext.style.transform = `translateX(-${textWidth + 10}px)`
