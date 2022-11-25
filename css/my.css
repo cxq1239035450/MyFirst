@@ -1,13 +1,21 @@
 .musicbox {
     position: fixed;
     bottom: 20px;
-    right: 10px;
-    width: 160px;
+    /* right: 10px; */
+    /* width: 160px; */
+    right: 0;
     border-radius: 4px;
     background: white;
     padding: 5px 10px;
     color: skyblue;
     overflow: hidden;
+    transition: 0.5s all;
+}
+.box{
+    display: none;
+}
+.musicSwitch{
+    
 }
 .music{
     display: flex;
