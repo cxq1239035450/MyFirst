@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Heart Decoration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffe6ec;
+            /* 粉色背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* 爱心背景 */
+        /* 爱心形状 */
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 250px;
+            height: 250px;
+            background: #ffd6dc;
+            /* 爱心背景色 */
+            box-shadow: 0 0 20px rgba(255, 180, 200, 0.5);
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #ffd6dc;
+        }
+
+        .heart::before {
+            top: -50%;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: -50%;
+        }
+
+        .line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 320px;
+        }
+
+        .hello-kitty {
+            position: absolute;
+            top: 15%;
+            left: 10%;
+            width: 120px;
+            height: 120px;
+            background: url("./1.png") round;
+            /* border-radius: 50%; */
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+            animation: float-y 2s ease-in-out infinite;
+        }
+
+        .balloon {
+            position: absolute;
+            top: 30%;
+            right: 10%;
+            width: 80px;
+            height: 180px;
+            /* background: #ffd6dc; */
+            background: url("./3.png") round;
+            border-radius: 50%;
+            /* box-shadow: 0 0 10px rgba(255, 180, 200, 0.5); */
+            animation: float-y 1.5s ease-in-out infinite;
+        }
+
+        .ice-cream {
+            position: absolute;
+            bottom: 20%;
+            right: 15%;
+            width: 100px;
+            height: 180px;
+            /* background: #fff; */
+            background: url("./2.png") round;
+            border-radius: 10px 10px 0 0;
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);  */
+            animation: float-x 2.5s ease-in-out infinite;
+        }
+
+        .small-heart {
+            position: absolute;
+            bottom: 30%;
+            left: 15%;
+            width: 120px;
+            height: 120px;
+            /* background: red; */
+            background: url("./4.png") round;
+            transform: rotate(45deg);
+            animation: float-x 3s ease-in-out infinite;
+        }
+
+        /* 动画效果 */
+        @keyframes float-y {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float-x {
+            0% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+        .signature{
+            position: absolute;
+            bottom: 2%;
+            right: 2%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- <div class="heart"></div> -->
+        
+        <canvas id="sinWaveCanvas" width="500" height="500" class="line"></canvas>
+
+        <div class="hello-kitty"></div>
+        <div class="balloon"></div>
+        <div class="ice-cream"></div>
+        <div class="small-heart"></div>
+        <div class="signature">林</div>
+    </div>
+</body>
+<script src="complex.min.js"></script>
+<script>
+    function power(x, y) {
+        let cx = new Complex(x)
+        return Math.sqrt(cx.pow(y).re ** 2 + cx.pow(y).im ** 2)
+    }
+    const MF = (x, t) => {
+        const y =
+            power(x, 2 / 3) +
+            0.9 * power(3.3 - power(x, 2), 1 / 2) * Math.sin(7 * Math.PI * x + t)
+        return y
+    }
+    const canvas = document.getElementById('sinWaveCanvas')
+    const ctx = canvas.getContext('2d')
+    // 设置画布中心点为原点
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    const draw = (time = 0) => {
+        if (!ctx) return
+        // 清除之前的绘制内容
+        ctx.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height)
+
+        // 绘制MF函数曲线
+        ctx.beginPath()
+        ctx.strokeStyle = '#f00'
+
+        const scaleX = 100
+        const scaleY = 100
+
+        for (let x = -1.8; x <= 1.8; x += 0.01) {
+            const y = MF(x, time)
+            if (x === -1.8) {
+                ctx.moveTo(x * scaleX, -y * scaleY)
+            } else {
+                ctx.lineTo(x * scaleX, -y * scaleY)
+            }
+        }
+        ctx.stroke()
+        // 请求下一帧动画
+        requestAnimationFrame(() => draw(time + 0.1))
+    }
+    draw()
+</script>
+
+</html>

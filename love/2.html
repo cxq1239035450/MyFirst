@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+    <canvas id="sinWaveCanvas" width="800" height="400"></canvas>
+    <script>
+        function power(x, y) {  
+  let cx = new Complex(x)
+  return Math.sqrt(cx.pow(y).re**2 + cx.pow(y).im**2)
+ 
+}
+const MF = (x: number, t: number) => {
+  const y =
+    power(x, 2 / 3) +
+    0.9 * power(3.3 - power(x, 2), 1 / 2) * Math.sin(10 * Math.PI * x + t)
+  return y
+}
+
+const draw = (time: number = 0) => {
+  const canvas = document.getElementById('sinWaveCanvas') as HTMLCanvasElement
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
+  // 清除之前的绘制内容
+  ctx.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height)
+
+  // 绘制MF函数曲线
+  ctx.beginPath()
+  ctx.strokeStyle = '#f00'
+  
+  const scaleX = 50
+  const scaleY = 50
+
+  for (let x = -1.9; x <= 1.9; x += 0.01) {
+    const y = MF(x, time)
+    if (x === -1.9) {
+      ctx.moveTo(x * scaleX, -y * scaleY)
+    } else {
+      ctx.lineTo(x * scaleX, -y * scaleY)
+    }
+  }
+  ctx.stroke()
+
+  // 请求下一帧动画
+  requestAnimationFrame(() => draw(time + 0.1))
+}
+        function power(x, y) {
+            return Math.exp(y * Math.log(x));
+        }
+        const fn = (x) => {
+            const y = power(x, 2 / 3) + 0.9 * power(3.3 - power(x, 2), 1 / 2) * Math.sin(10 * Math.PI * x)
+            console.log(x,'==',y);
+
+            return y;
+        }
+        const canvas = document.getElementById('sinWaveCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const scale = 50; // 缩放比例，用于将函数值映射到画布上
+        const offsetX = canvas.width / 2; // 水平偏移量，用于将函数图像居中 
+        const offsetY = canvas.height / 2; // 垂直偏移量，用于将函数图像居中
+
+        ctx.beginPath();
+        ctx.moveTo(0, offsetY - fn(0) * scale);
+
+        for (let x = -2; x <= 2; x = x + 0.01) {
+            const y = fn(x)
+            ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+    </script>
+</body>
+
+</html>
